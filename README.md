@@ -1,4 +1,4 @@
-# TerraShift V0.3
+# TerraShift V0.4
 
 Interactive 3D global sea-level explorer using CesiumJS 1.134, terrain and imagery from Cesium ion, and the original EGM96 geoid grid.
 
@@ -26,3 +26,6 @@ See ARCHITECTURE.md, DATA_SOURCES.md and ROADMAP.md.
 
 ## V0.3 independent elevation imagery
 The previous terrain material has been disabled. Flooding uses Mapzen Terrarium elevation PNG tiles from AWS Open Data, decoded in the browser and displayed as a Cesium imagery layer. It is independent of the visible terrain mesh, with fixed maximum source zoom 12 and overzoom above that level. The source tiles are cached in memory; the overlay rebuild is debounced 160 ms. Unlike the prior shader, the grid uses source orthometric elevation estimates; no EGM96 correction is applied a second time. Coverage is Web Mercator (approximately ±85.05 degrees); polar caps are not simulated. Source resolution, datum inconsistencies, tile loading and static threshold limitations remain. The overlay is not a true elevated 3D water surface. Existing ocean classification uses nonpositive elevation, which also includes inland depressions. Browser verification is pending.
+
+## V0.4 experimental elevated water
+Automatic mode selects independent DEM imagery below 500 m and an opaque global ellipsoid shell at 500–9000 m. The shell uses a single static 720×1440 tessellated geometry with scale changes, flat colour and terrain depth testing; no terrain-height fragment classification or coplanar overlay in this mode. The shell includes the poles. Raster mode remains selectable at all heights. The camera is kept 150 m above the nominal shell to prevent viewing from inside. Explicit surface selection falls back to raster below 500 m. This shell uses WGS84 ellipsoid heights, not geoid-corrected mean sea level; local datum error can reach roughly 100 m and tessellation adds further error (order tens of metres). It is intended for extreme illustrative scenarios, not coastal mapping. It fills disconnected basins. Real browser depth ordering, precision, performance and camera behaviour are not verified here. The older raster mode still uses external Mapzen tiles and is not ocean-connected.

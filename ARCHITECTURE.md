@@ -13,3 +13,6 @@ The slider maps three equal control intervals to 0–100 m, 100–1,000 m and 1,
 
 ## V0.3
 The active rendering path uses FloodImageryProvider in src/raster.js. Cached source RGB tiles are decoded into static RGBA flood imagery. Cesium drapes the result on its terrain; the classification does not depend on mesh vertex height. The former shader and geoid reader are retained but no longer imported. Future work: validate coverage, cross-tile LOD consistency, ocean connectivity and true geoid-referenced elevated water geometry.
+
+## V0.4 surface renderer
+src/water.js holds a single Cesium Primitive using EllipsoidGeometry and a flat opaque PerInstanceColorAppearance. The primitive model matrix scales WGS84 semi-axes by selected rise, avoiding rebuilding geometry on slider movement. Terrain depth testing determines visible land. preUpdate applies scale when geometry is ready and prevents the camera entering the shell. Raster and shell modes are mutually exclusive. Automatic threshold 500 m protects smaller scenarios from the shell's datum and tessellation error. No physically accurate geoid shell or hydraulic connectivity yet.
