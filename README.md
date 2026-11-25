@@ -1,4 +1,4 @@
-# TerraShift V0.2
+# TerraShift V0.3
 
 Interactive 3D global sea-level explorer using CesiumJS 1.134, terrain and imagery from Cesium ion, and the original EGM96 geoid grid.
 
@@ -23,3 +23,6 @@ See ARCHITECTURE.md, DATA_SOURCES.md and ROADMAP.md.
 - Screen-space derivative feathering and FXAA; higher terrain detail, larger cache, and quality control. These mitigate aliasing and tile changes but do not guarantee a flicker-free global view; coarse source terrain remains limiting.
 - Everest camera preset and extreme scenarios. No hydraulic simulation or true elevated water geometry yet.
 - V0.2 browser smoke test and unit test execution pending. Compare against V0.1 at global, country and city zooms. The material shader was checked against the pinned GlobeFS source but has not been compiled in a browser here.
+
+## V0.3 independent elevation imagery
+The previous terrain material has been disabled. Flooding uses Mapzen Terrarium elevation PNG tiles from AWS Open Data, decoded in the browser and displayed as a Cesium imagery layer. It is independent of the visible terrain mesh, with fixed maximum source zoom 12 and overzoom above that level. The source tiles are cached in memory; the overlay rebuild is debounced 160 ms. Unlike the prior shader, the grid uses source orthometric elevation estimates; no EGM96 correction is applied a second time. Coverage is Web Mercator (approximately ±85.05 degrees); polar caps are not simulated. Source resolution, datum inconsistencies, tile loading and static threshold limitations remain. The overlay is not a true elevated 3D water surface. Existing ocean classification uses nonpositive elevation, which also includes inland depressions. Browser verification is pending.
