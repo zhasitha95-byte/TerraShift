@@ -1,0 +1,5 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {toDisplay,parseRise,floodCandidate,readScenario} from '../src/model.js';
+test('feet and metres round trip',()=>{assert.ok(Math.abs(toDisplay(1,'ft')-3.280839895)<1e-8);assert.ok(Math.abs(parseRise(toDisplay(100,'ft'),'ft')-100)<1e-9)});
+test('input bounds and invalid values',()=>{for(const x of ['',' ',NaN,Infinity,-1,1001])assert.equal(parseRise(x),null);assert.equal(parseRise('0'),0);assert.equal(parseRise('1000'),1000)});
+test('threshold, datum and water exclusion',()=>{assert.equal(floodCandidate(34,30,5),true);assert.equal(floodCandidate(36,30,5),false);assert.equal(floodCandidate(34,30,5,true),false);assert.equal(floodCandidate(-3,0,0),false)});
+test('share state validation',()=>{assert.deepEqual(readScenario('?rise=25&unit=ft'),{rise:25,unit:'ft',camera:null});assert.equal(readScenario('?rise=-20').rise,10);assert.equal(readScenario('?lon=999&lat=0&alt=100&heading=0&pitch=0&roll=0').camera,null)});
