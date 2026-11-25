@@ -1,4 +1,4 @@
-# TerraShift V0.1
+# TerraShift V0.2
 
 Interactive 3D global sea-level explorer using CesiumJS 1.134, terrain and imagery from Cesium ion, and the original EGM96 geoid grid.
 
@@ -12,8 +12,14 @@ The preview does not simulate flooding until terrain is connected. The browser l
 
 ## Tests and limitations
 
-Run npm test with Node 18+ for four dependency-free logic tests. Browser rendering, texture sampling, external-service connectivity and shader compilation remain unverified for this deployment. Validate on Colombo, Maldives, Netherlands, Bangladesh and Miami. Compare fixed-camera overlays at 0, 5, 25 and 100 m against independent elevation data.
+Run npm test with Node 18+ for five dependency-free logic tests. Browser rendering, texture sampling, external-service connectivity and shader compilation remain unverified for this deployment. Validate on Colombo, Maldives, Netherlands, Bangladesh and Miami. Compare fixed-camera overlays at 0, 5, 25 and 100 m against independent elevation data.
 
 This is a static elevation threshold, not a hydraulic or scientifically validated flood model. Inland depressions may appear submerged. Coastal defenses, tides, erosion, land motion and regional sea-level variation are not modeled. Existing water is excluded where a terrain water mask is available. Low terrain LOD is coarse. The EGM96 correction is approximate and texture orientation needs verification. No property-level risk claims. The overlay tints terrain rather than creating a physically flat water surface.
 
 See ARCHITECTURE.md, DATA_SOURCES.md and ROADMAP.md.
+## V0.2 changes
+- Range 0–9,000 m (about 29,528 ft), with a piecewise slider retaining 0.1 m resolution through 100 m and exact manual entry across the range.
+- Solid, unanimated blue ocean and inundated land by default; original imagery preserved at zero rise. Optional overlay mode.
+- Screen-space derivative feathering and FXAA; higher terrain detail, larger cache, and quality control. These mitigate aliasing and tile changes but do not guarantee a flicker-free global view; coarse source terrain remains limiting.
+- Everest camera preset and extreme scenarios. No hydraulic simulation or true elevated water geometry yet.
+- V0.2 browser smoke test and unit test execution pending. Compare against V0.1 at global, country and city zooms. The material shader was checked against the pinned GlobeFS source but has not been compiled in a browser here.
